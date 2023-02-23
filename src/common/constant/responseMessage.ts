@@ -29,5 +29,6 @@ export default {
         delete_error: '요청한 친구의 삭제를 실패하였습니다.',
         request_error: '보낸 친구 요청 목록 불러오기를 실패하였습니다.',
         post_error: '친구 추가 요청을 실패하였습니다.',
+        request_choice_error: '요청한 데이터를 처리하지 못했습니다.',
     },
 };

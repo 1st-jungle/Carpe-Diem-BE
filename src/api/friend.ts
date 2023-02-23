@@ -56,4 +56,14 @@ route.get('/request', (req: Request, res: Response) => {
     });
 });
 
+route.put('/request/:friendEmail/:check', (req: Request, res: Response) => {
+    if (!req.user) return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
+
+    const putRequestFriend = [req.user.email, req.params.friendEmail, Number(req.params.check)];
+    friendService.putChoiceRequest(putRequestFriend, (err, data) => {
+        if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.friend.request_choice_error });
+        else res.status(statusCode.OK).send(data);
+    });
+});
+
 export default route;

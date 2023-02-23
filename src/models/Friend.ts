@@ -4,7 +4,7 @@ interface FriendAttributes {
     friendId: number;
     userEmail: string;
     friendEmail: string;
-    state: number;
+    // state: number;
     // other attributes...
 }
 export default (sequelize: any, DataTypes: any): any => {
@@ -12,7 +12,7 @@ export default (sequelize: any, DataTypes: any): any => {
         friendId: number;
         userEmail: string;
         friendEmail: string;
-        state: number;
+        // state: number;
     }
     Friend.init(
         {
@@ -31,11 +31,6 @@ export default (sequelize: any, DataTypes: any): any => {
             friendEmail: {
                 field: 'friend_email',
                 type: DataTypes.STRING(100),
-                allowNull: false,
-            },
-            state: {
-                field: 'state',
-                type: DataTypes.INTEGER,
                 allowNull: false,
             },
         },

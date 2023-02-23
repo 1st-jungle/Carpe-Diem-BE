@@ -64,7 +64,7 @@ const deleteFriend = async (deleteEmail, callback) => {
 };
 
 const getSendRequestList = async (userEmail, callback) => {
-    await FriendRequest.findAll({ where: { send_email: userEmail } })
+    await FriendRequest.findOne({ where: { send_email: userEmail } })
         .then(async (result) => {
             const receiveEmails = result.map((r) => r.receiveEmail);
 
@@ -82,4 +82,52 @@ const getSendRequestList = async (userEmail, callback) => {
         });
 };
 
-export default { getFriendList, deleteFriend, getSendRequestList, postFriend };
+const putChoiceRequest = async (putRequestFriend, callback) => {
+    const receive_email = putRequestFriend[0];
+    const send_email = putRequestFriend[1];
+    const check = putRequestFriend[2];
+
+    if (check == 1) {
+        Friend.create({
+            userEmail: send_email,
+            friendEmail: receive_email,
+        })
+            .then((result) => {
+                Friend.create({
+                    userEmail: receive_email,
+                    friendEmail: send_email,
+                })
+                    .then(async (result) => {
+                        await FriendRequest.destroy({ where: { send_email: send_email, receive_email: receive_email } })
+                            .then((result) => {
+                                Logger.info(`Success! ${result}`);
+                                callback(null, 'ACCEPTE FRIEND REQUEST AND DELETE FRIEND REQUEST OK');
+                            })
+                            .catch((err) => {
+                                Logger.error(err);
+                                return callback(err);
+                            });
+                    })
+                    .catch((err) => {
+                        Logger.error(err);
+                        return callback(err);
+                    });
+            })
+            .catch((err) => {
+                Logger.error(err);
+                return callback(err);
+            });
+    } else if (check == 2) {
+        await FriendRequest.destroy({ where: { send_email: send_email, receive_email: receive_email } })
+            .then((result) => {
+                Logger.info(`Success! ${result}`);
+                callback(null, 'DELETE FRIEND REQUEST OK');
+            })
+            .catch((err) => {
+                Logger.error(err);
+                return callback(err);
+            });
+    }
+};
+
+export default { getFriendList, deleteFriend, getSendRequestList, postFriend, putChoiceRequest };
