@@ -6,17 +6,17 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: [ self-hosted, CICD.yml ]
+    runs-on: [ self-hosted, label-1 ]
     strategy:
       matrix:
         node-version: [18.13.0]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Setting Node version
         uses: actions/setup-node@v3
-        with: 
+        with:
           node-version: ${{ matrix.node-version }}
 
       - name: Setting ENV
@@ -26,12 +26,12 @@ jobs:
           ls -al
           touch .env
           echo "${{ secrets.PRODUCTION_ENV }}" > .env
-          
+
 
   deploy:
     needs: build
     name: Deploy
-    runs-on: [ self-hosted, CICD.yml ]
+    runs-on: [ self-hosted, label-1 ]
     steps:
       - name: Check pwd
         working-directory: ./
@@ -45,4 +45,3 @@ jobs:
           docker stop carpediem-server && docker rm carpediem-server && docker rmi carpediem-server:latest || true
           docker build . -t carpediem-server:latest
           docker run -d -p 4000:4000 --name carpediem-server --restart always carpediem-server:latest
-    
