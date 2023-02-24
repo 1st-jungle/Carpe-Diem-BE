@@ -26,6 +26,8 @@ jobs:
           ls -al
           touch .env
           echo "${{ secrets.PRODUCTION_ENV }}" > .env
+          echo "${{ secrets.SSL_PRIVATE_KEY }}" > privkey.pem
+          echo "${{ secrets.SSL_CERTIFICATE }}" > fullchain.pem
 
 
   deploy:
