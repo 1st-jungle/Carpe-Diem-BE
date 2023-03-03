@@ -41,7 +41,7 @@ const swaggerProduces = ['application/json'];
 
 const swaggerServers = [
     {
-        url: `http://${config.host}:${config.port}`,
+        url: `https://${config.host}:${config.port}`,
         description: '현재 서버 URL',
     },
 ];
