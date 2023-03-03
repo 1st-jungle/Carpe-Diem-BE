@@ -4,14 +4,17 @@ import db from '../models';
 
 const Card = db.card;
 
-const getCards = async (userId, callback) => {
-    await Card.findAll({ where: { user_id: userId } })
+const getCards = async (userId, page, size, callback) => {
+    const offset = page * size;
+
+    await Card.findAndCountAll({ where: { user_id: userId }, offset: offset, limit: size, order: [['createdAt', 'DESC']] })
         .then((result) => {
-            Logger.info(`Success! ${result}`);
-            callback(null, result);
+            const { rows, count } = result;
+            Logger.info(`Success! ${rows}`);
+            callback(null, rows);
         })
         .catch((err) => {
-            Logger.error(err);
+            Logger.error('[getCards]Error', err);
             return callback(err);
         });
 };
@@ -19,11 +22,11 @@ const getCards = async (userId, callback) => {
 const getCard = async (cardId, callback) => {
     await Card.findOne({ where: { card_id: cardId } })
         .then((result) => {
-            Logger.info(`Success! ${result}`);
+            Logger.info(`[getCard]Success! ${result}`);
             callback(null, result);
         })
         .catch((err) => {
-            Logger.error(err);
+            Logger.error('[getCard]Error', err);
             return callback(err);
         });
 };
@@ -31,11 +34,11 @@ const getCard = async (cardId, callback) => {
 const deleteCard = async (cardId, callback) => {
     await Card.destroy({ where: { card_id: cardId } })
         .then((result) => {
-            Logger.info(`Success! ${result}`);
+            Logger.info(`[deleteCard]Success! ${result}`);
             callback(null, 'DELETE CARD OK');
         })
         .catch((err) => {
-            Logger.error(err);
+            Logger.error('[deleteCard]Error', err);
             return callback(err);
         });
 };
@@ -54,11 +57,11 @@ const putCard = async (cardDto, callback) => {
         { where: { cardId: cardDto.card_id } },
     )
         .then((result) => {
-            Logger.info(`Success! ${result}`);
+            Logger.info(`[putCard]Success! ${result}`);
             callback(null, 'UPDATE CARD OK');
         })
         .catch((err) => {
-            Logger.error(err);
+            Logger.error('[putCard]Error', err);
             return callback(err);
         });
 };

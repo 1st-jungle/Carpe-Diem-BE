@@ -20,7 +20,16 @@ route.get('/', async (req: Request, res: Response) => {
     if (!req.user) return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
     const userId = req.user.user_id;
 
-    cardService.getCards(userId, (err, data) => {
+    const pageAsNumber = Number.parseInt(req.query.page as string);
+    const sizeAsNumber = Number.parseInt(req.query.size as string);
+
+    let page = 0;
+    if (!Number.isNaN(pageAsNumber) && pageAsNumber >= 0) page = pageAsNumber;
+
+    let size = 12;
+    if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 13) size = sizeAsNumber;
+
+    cardService.getCards(userId, page, size, (err, data) => {
         if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.card.server_error });
         else res.status(statusCode.OK).send(data);
     });

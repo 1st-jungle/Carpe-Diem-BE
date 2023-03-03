@@ -6,6 +6,7 @@ interface AlbumAttributes {
     coverImgUrl: string;
     title: string;
     cardId: JSON;
+    showCheck: number;
     // other attributes...
 }
 export default (sequelize: any, DataTypes: any): any => {
@@ -15,6 +16,7 @@ export default (sequelize: any, DataTypes: any): any => {
         coverImgUrl: string;
         title: string;
         cardId: JSON;
+        showCheck: number;
         // static associate(models: any) {}
     }
     Album.init(
@@ -44,6 +46,11 @@ export default (sequelize: any, DataTypes: any): any => {
                 field: 'card_id',
                 type: DataTypes.JSON,
                 allowNull: false,
+            },
+            showCheck: {
+                field: 'show_check',
+                type: DataTypes.INTEGER,
+                allowNull: true,
             },
         },
         {

@@ -87,6 +87,11 @@ export default {
                                     description: '해당 앨범에 들어있는 카드 아이디',
                                     example: '["501", "502", "503", "504", "505", "506", "507"]',
                                 },
+                                cover_img_url: {
+                                    type: 'string',
+                                    description: '앨범 커버 이미지 URL',
+                                    example: 'card-thumbnail/test/2023_1_15/21_54_37.jpg',
+                                },
                             },
                         },
                     },
@@ -320,7 +325,7 @@ export default {
                                     description: '타이틀',
                                     example: 'HSH의 즐거운 날',
                                 },
-                                cover_img_url: {
+                                thumbnail_url: {
                                     type: 'string',
                                     description: '해당 앨범이 들어있는 S3 파일 경로(.jpg)',
                                     example: 'card-thumbnail/100162696345445292366/2023_02_14/14_41_35.jpg',

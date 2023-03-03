@@ -45,4 +45,28 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-export default upload;
+const uploadImg = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: config.aws.bucket_name,
+        key: function (req: Request, file, cb) {
+            const format = file.originalname.split('.').slice(-1)[0];
+            if (!req.user) {
+                Logger.error('[S3 upload] Unautorized.');
+                return cb(new Error('Unautorized.'));
+            }
+
+            // 파일 포맷 유효성 검사
+            if (!['jpg', 'png', 'gif'].includes(format)) {
+                Logger.error('[S3 upload] Invalid file format.');
+                return cb(new Error('Only images are allowed'));
+            }
+
+            Logger.info(`File uploaded successfully.`);
+            cb(null, `user-img/${req.user.user_id}/${file.originalname}`);
+        },
+    }),
+    limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+export { upload, uploadImg };

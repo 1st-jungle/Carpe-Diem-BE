@@ -4,8 +4,8 @@ RUN mkdir -p /app
 WORKDIR /app
 ADD . /app/
 
-RUN npm run install:clean
-RUN npm install
+RUN rm -rf node_modules && rm -rf package-lock.json || true
+RUN npm i
 RUN npm run build
 
 ENV HOST 0.0.0.0

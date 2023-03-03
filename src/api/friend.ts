@@ -75,4 +75,14 @@ route.put('/request/:friendEmail/:check', (req: Request, res: Response) => {
     });
 });
 
+route.get('/:friendEmail', (req: Request, res: Response) => {
+    console.log(req.params.friendEmail);
+    if (!req.user) return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
+
+    friendService.getFriendLibrary(req.params.friendEmail, (err, data) => {
+        if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.friend.friend_library_error });
+        else res.status(statusCode.OK).send(data);
+    });
+});
+
 export default route;

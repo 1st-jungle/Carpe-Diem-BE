@@ -1,49 +1,48 @@
 name: Deploy to server
 on:
-  push:
-    branches: [master]
+    push:
+        branches: [master]
 
 jobs:
-  build:
-    name: Build
-    runs-on: [ self-hosted, label-1 ]
-    strategy:
-      matrix:
-        node-version: [18.13.0]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    build:
+        name: Build
+        runs-on: [self-hosted, label-1]
+        strategy:
+            matrix:
+                node-version: [18.13.0]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-      - name: Setting Node version
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Setting Node version
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: Setting ENV
-        working-directory: ./
-        run: |
-          pwd
-          ls -al
-          touch .env
-          echo "${{ secrets.PRODUCTION_ENV }}" > .env
-          echo "${{ secrets.SSL_PRIVATE_KEY }}" > privkey.pem
-          echo "${{ secrets.SSL_CERTIFICATE }}" > fullchain.pem
+            - name: Setting ENV
+              working-directory: ./
+              run: |
+                  pwd
+                  ls -al
+                  touch .env
+                  echo "${{ secrets.PRODUCTION_ENV }}" > .env
+                  echo "${{ secrets.SSL_PRIVATE_KEY }}" > privkey.pem
+                  echo "${{ secrets.SSL_CERTIFICATE }}" > fullchain.pem
 
+    deploy:
+        needs: build
+        name: Deploy
+        runs-on: [self-hosted, label-1]
+        steps:
+            - name: Check pwd
+              working-directory: ./
+              run: |
+                  pwd
+                  ls -ali
 
-  deploy:
-    needs: build
-    name: Deploy
-    runs-on: [ self-hosted, label-1 ]
-    steps:
-      - name: Check pwd
-        working-directory: ./
-        run: |
-          pwd
-          ls -ali
-
-      - name: Docker run
-        run: |
-          docker container ls -a
-          docker stop carpediem-server && docker rm carpediem-server && docker rmi carpediem-server:latest || true
-          docker build . -t carpediem-server:latest
-          docker run -d -p 4000:4000 --name carpediem-server --restart always carpediem-server:latest
+            - name: Docker run
+              run: |
+                  docker container ls -a
+                  docker stop carpediem-server && docker rm carpediem-server && docker rmi carpediem-server:latest || true
+                  docker build . -t carpediem-server:latest
+                  docker run -d -p 4000:4000 --name carpediem-server --restart always carpediem-server:latest

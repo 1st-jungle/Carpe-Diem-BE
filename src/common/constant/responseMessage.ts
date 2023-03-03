@@ -17,6 +17,7 @@ export default {
     album: {
         server_error: '요청한 앨범 데이터를 처리하지 못했습니다.',
         create_error: '새 앨범을 생성하지 못했습니다.',
+        check_error: '앨범 check를 업데이트하지 못했습니다.',
     },
     user: {
         user_error: '요청한 유저의 데이터를 불러오지 못했습니다.',
@@ -31,5 +32,6 @@ export default {
         receive_error: '받은 친구 요청 목록 불러오기를 실패하였습니다.',
         post_error: '친구 추가 요청을 실패하였습니다.',
         request_choice_error: '요청한 데이터를 처리하지 못했습니다.',
+        friend_library_error: '친구의 서재를 불러오지 못했습니다.',
     },
 };

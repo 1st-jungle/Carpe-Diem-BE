@@ -11,7 +11,7 @@ const validateUser = (userId, callback) => {
             callback(null, result);
         })
         .catch((err) => {
-            Logger.error(err);
+            Logger.error('[validateUser]Error', err);
             return callback(err);
         });
 };
@@ -28,7 +28,7 @@ const signUp = (userDto, callback) => {
             callback(null, result);
         })
         .catch((err) => {
-            Logger.error(err);
+            Logger.error('[signUp]Error', err);
             return callback(err);
         });
 };

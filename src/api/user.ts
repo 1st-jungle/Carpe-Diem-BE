@@ -27,7 +27,7 @@ route.get('/', (req: Request, res: Response) => {
     });
 });
 
-route.get('/friend/:friendEmail', (req: Request, res: Response) => {
+route.get('/search/:friendEmail', (req: Request, res: Response) => {
     if (!req.user) return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
     const friendEmail = req.params.friendEmail;
 

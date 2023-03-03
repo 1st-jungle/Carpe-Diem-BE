@@ -14,7 +14,6 @@ export default (app) => {
 
     // 사용자 인증 이후, 요청할 때마다 호출
     passport.deserializeUser(function (user, done) {
-        Logger.info('deserializeUser', user);
         done(null, user);
     });
 
