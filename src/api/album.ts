@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import config from '../config';
 
 import statusCode from '../common/constant/statusCode';
 import responseMessage from '../common/constant/responseMessage';
@@ -10,7 +11,7 @@ const route = express.Router();
 
 route.use(
     cors({
-        origin: true,
+        origin: ['http://localhost:3000', `http://${config.client.host}`, `https://${config.client.host}`],
         credentials: true,
     }),
 );

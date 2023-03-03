@@ -1,6 +1,7 @@
 import { Container } from 'typedi';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import config from '../config';
 import { upload } from '../loaders/multer';
 import { uploadImg } from '../loaders/multer';
 import expressRequest from '../types/expressRequest';
@@ -13,7 +14,7 @@ const route = express.Router();
 
 route.use(
     cors({
-        origin: true,
+        origin: ['http://localhost:3000', `http://${config.client.host}`, `https://${config.client.host}`],
         credentials: true,
     }),
 );

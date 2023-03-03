@@ -51,7 +51,7 @@ app.use(express.json());
 
 app.use(
     cors({
-        origin: true,
+        origin: ['http://localhost:3000', `http://${config.client.host}`, `https://${config.client.host}`],
         credentials: true,
     }),
 );
@@ -99,7 +99,7 @@ startServer();
 /* Socket */
 const wsServer = new Server(socketServer, {
     cors: {
-        origin: '*',
+        origin: ['http://localhost:3000', `http://${config.client.host}`, `https://${config.client.host}`],
         credentials: true,
     },
 });
