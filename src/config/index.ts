@@ -36,4 +36,8 @@ export default {
         client_secret_key: process.env.GOOGLE_CLIENT_SECRET_KEY,
         redirect_uri: process.env.GOOGLE_REDIRECT_URI,
     },
+    mail: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 };

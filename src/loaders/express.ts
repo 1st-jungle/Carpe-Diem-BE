@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import config from '../config';
 import ApiDocs from '../docs/index';
 
 function getSwaggerOption() {
@@ -26,7 +25,7 @@ export default (app) => {
 
     app.use(
         cors({
-            origin: ['http://localhost:3000', `http://${config.client.host}`, `https://${config.client.host}`],
+            origin: true,
             credentials: true,
         }),
     );

@@ -4,13 +4,12 @@ import responseMessage from '../common/constant/responseMessage';
 import friendAlbumService from '../services/friendAlbum';
 
 import cors from 'cors';
-import config from '../config';
 
 const route = express.Router();
 
 route.use(
     cors({
-        origin: ['http://localhost:3000', `http://${config.client.host}`, `https://${config.client.host}`],
+        origin: true,
         credentials: true,
     }),
 );

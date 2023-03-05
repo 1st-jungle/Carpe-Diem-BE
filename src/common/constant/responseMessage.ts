@@ -34,4 +34,7 @@ export default {
         request_choice_error: '요청한 데이터를 처리하지 못했습니다.',
         friend_library_error: '친구의 서재를 불러오지 못했습니다.',
     },
+    report: {
+        server_error: '요청한 감정 리포트를 처리하지 못했습니다.',
+    },
 };

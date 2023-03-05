@@ -32,7 +32,7 @@ const getVideo = async (userId, callback) => {
             ],
         },
         order: [[Sequelize.literal('created_at'), 'DESC']],
-        limit: 5,
+        limit: 4,
     })
         .then((result) => {
             Logger.info(`[getVideo]Success! ${result}`);
