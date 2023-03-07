@@ -14,7 +14,7 @@ const getReport = async (userId, callback) => {
         where: {
             user_id: userId,
             created_at: {
-                [Op.between]: [Sequelize.fn('date_sub', Sequelize.fn('now'), Sequelize.literal('INTERVAL 7 DAY')), Sequelize.fn('now')],
+                [Op.between]: [Sequelize.fn('date_sub', Sequelize.fn('now'), Sequelize.literal('INTERVAL 6 DAY')), Sequelize.fn('now')],
             },
         },
         group: ['created_date', 'expression_label'],

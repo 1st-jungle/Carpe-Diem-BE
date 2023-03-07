@@ -4,6 +4,7 @@ import Logger from './logger';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
 import { S3Client } from '@aws-sdk/client-s3';
+import AWS from 'aws-sdk';
 
 import config from '../config';
 
@@ -16,7 +17,7 @@ const s3 = new S3Client({
 });
 
 const dateFormat = (now): string => {
-    return now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate();
+    return now.getFullYear() + '_' + (now.getMonth() + 1) + '_' + now.getDate();
 };
 
 const upload = multer({
@@ -25,7 +26,7 @@ const upload = multer({
         bucket: config.aws.bucket_name,
         key: function (req: Request, file, cb) {
             const format = file.originalname.split('.').slice(-1)[0];
-            const now = new Date();
+            const now = new Date(new Date().getTime() + 540 * 60 * 1000);
 
             if (!req.user) {
                 Logger.error('[S3 upload] Unautorized.');
@@ -69,4 +70,16 @@ const uploadImg = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-export { upload, uploadImg };
+const deleteImg = (key) => {
+    const s3 = new AWS.S3();
+    const params = { Bucket: config.aws.bucket_name, Key: key };
+
+    s3.deleteObject(params, (err, data) => {
+        if (err) {
+            throw err;
+        }
+        Logger.info(`delete images successfully!`);
+    });
+};
+
+export { upload, uploadImg, deleteImg };
