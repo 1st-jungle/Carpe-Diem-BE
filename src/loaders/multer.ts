@@ -16,7 +16,7 @@ const s3 = new S3Client({
 });
 
 const dateFormat = (now): string => {
-    return now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate();
+    return now.getFullYear() + '_' + (now.getMonth() + 1) + '_' + now.getDate();
 };
 
 const upload = multer({
@@ -25,7 +25,7 @@ const upload = multer({
         bucket: config.aws.bucket_name,
         key: function (req: Request, file, cb) {
             const format = file.originalname.split('.').slice(-1)[0];
-            const now = new Date();
+            const now = new Date(new Date().getTime() + 540 * 60 * 1000);
 
             if (!req.user) {
                 Logger.error('[S3 upload] Unautorized.');
