@@ -109,6 +109,7 @@ route.put('/updateImages', uploadImg.array('imgs', 3), async (req: Request, res:
     });
 
     userImgUrl = img2['key'];
+    usimDto['userId'] = userId;
     usimDto['userImgUrl'] = userImgUrl;
     friendService.putUserImages(usimDto, (err, data) => {
         if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.usim.update_image_error });
@@ -116,6 +117,7 @@ route.put('/updateImages', uploadImg.array('imgs', 3), async (req: Request, res:
     });
 
     userImgUrl = img3['key'];
+    usimDto['userId'] = userId;
     usimDto['userImgUrl'] = userImgUrl;
     friendService.putUserImages(usimDto, (err, data) => {
         if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.usim.update_image_error });
