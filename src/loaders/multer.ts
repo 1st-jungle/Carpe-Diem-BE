@@ -4,6 +4,7 @@ import Logger from './logger';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
 import { S3Client } from '@aws-sdk/client-s3';
+import AWS from 'aws-sdk';
 
 import config from '../config';
 
@@ -69,4 +70,16 @@ const uploadImg = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-export { upload, uploadImg };
+const deleteImg = (key) => {
+    const s3 = new AWS.S3();
+    const params = { Bucket: config.aws.bucket_name, Key: key };
+
+    s3.deleteObject(params, (err, data) => {
+        if (err) {
+            throw err;
+        }
+        Logger.info(`delete images successfully!`);
+    });
+};
+
+export { upload, uploadImg, deleteImg };

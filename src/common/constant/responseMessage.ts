@@ -37,4 +37,8 @@ export default {
     report: {
         server_error: '요청한 감정 리포트를 처리하지 못했습니다.',
     },
+    usim: {
+        upload_error: '파일이 존재하지 않습니다.',
+        update_image_error: '유저 학습 이미지 업데이트 요청에 실패하였습니다.',
+    },
 };

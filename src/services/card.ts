@@ -4,19 +4,46 @@ import db from '../models';
 
 const Card = db.card;
 
-const getCards = async (userId, page, size, callback) => {
-    const offset = page * size;
+// const getCards = async (userId, page, size, option, callback) => {
+//     const offset = page * size;
 
-    await Card.findAndCountAll({ where: { user_id: userId }, offset: offset, limit: size, order: [['createdAt', 'DESC']] })
-        .then((result) => {
-            const { rows, count } = result;
-            Logger.info(`Success! ${rows}`);
-            callback(null, rows);
-        })
-        .catch((err) => {
-            Logger.error('[getCards]Error', err);
-            return callback(err);
-        });
+//     await Card.findAndCountAll({ where: { user_id: userId }, offset: offset, limit: size, order: [['createdAt', 'DESC']] })
+//         .then((result) => {
+//             const { rows, count } = result;
+//             Logger.info(`Success! ${rows}`);
+//             callback(null, rows);
+//         })
+//         .catch((err) => {
+//             Logger.error('[getCards]Error', err);
+//             return callback(err);
+//         });
+// };
+
+const getCards = async (userId, page, size, option, callback) => {
+    const offset = (page + 1) * size;
+    if (option == 0) {
+        await Card.findAndCountAll({ where: { user_id: userId }, offset: 0, limit: offset, order: [['createdAt', 'DESC']] })
+            .then((result) => {
+                const { rows, count } = result;
+                Logger.info(`[getCards] Success!DESC ${rows}`);
+                callback(null, rows);
+            })
+            .catch((err) => {
+                Logger.error('[getCards]Error', err);
+                return callback(err);
+            });
+    } else if (option == 1) {
+        await Card.findAndCountAll({ where: { user_id: userId }, offset: 0, limit: offset, order: [['createdAt', 'ASC']] })
+            .then((result) => {
+                const { rows, count } = result;
+                Logger.info(`[getCards] Success!ASC ${rows}`);
+                callback(null, rows);
+            })
+            .catch((err) => {
+                Logger.error('[getCards]Error', err);
+                return callback(err);
+            });
+    }
 };
 
 const getCard = async (cardId, callback) => {

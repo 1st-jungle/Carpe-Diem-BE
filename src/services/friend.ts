@@ -2,11 +2,13 @@ import { Op } from 'sequelize';
 
 import Logger from '../loaders/logger';
 import db from '../models';
+import { deleteImg } from '../loaders/multer';
 
 const Friend = db.friend;
 const FriendRequest = db.friendRequest;
 const User = db.user;
 const Album = db.album;
+const Usim = db.usim;
 
 const getFriendList = async (userEmail, callback) => {
     await Friend.findAll({ where: { user_email: userEmail } })
@@ -155,6 +157,8 @@ const getFriendLibrary = async (friendEmail, callback) => {
         .then(async (result) => {
             await Album.findAll({ where: { user_id: result.userId, show_check: 1 } })
                 .then(async (result) => {
+                    console.log('🔥');
+
                     Logger.info(`[getFriendLibrary]Success! ${result}`);
                     callback(null, result);
                 })
@@ -169,4 +173,65 @@ const getFriendLibrary = async (friendEmail, callback) => {
         });
 };
 
-export default { getFriendList, deleteFriend, getSendRequestList, getReceiveRequestList, postFriend, putChoiceRequest, getFriendLibrary };
+const getUserImages = async (userId, callback) => {
+    await Usim.findAll({
+        attributes: ['img_id', 'userImgUrl', 'updatedAt'],
+        where: { user_id: userId },
+    })
+        .then((result) => {
+            Logger.info(`[getUserImages]Success! ${result}`);
+            callback(null, result);
+        })
+        .catch((err) => {
+            Logger.error('[getUserImages]Error', err);
+            return callback(err);
+        });
+};
+
+const deleteUserImages = async (userId) => {
+    await Usim.findAll({
+        attributes: ['user_img_url'],
+        where: { user_id: userId },
+        raw: true,
+    })
+        .then(async (result) => {
+            for (const key of result) {
+                await deleteImg(key.user_img_url);
+            }
+        })
+        .then(async () => {
+            await Usim.destroy({ where: { user_id: userId } })
+                .then((result) => {
+                    Logger.info(`[deleteUserImages]Success! ${result}`);
+                })
+                .catch((err) => {
+                    Logger.error('[deleteUserImages]Error', err);
+                });
+        });
+};
+
+const putUserImages = async (usimDto, callback) => {
+    const usimData = {
+        userId: usimDto.userId,
+        userImgUrl: usimDto.userImgUrl,
+    };
+
+    const usim = await Usim.create(usimData).catch((err) => {
+        Logger.error('[putUserImages]Error', err);
+        return callback(err);
+    });
+    Logger.info(`[putUserImages]Success!`, usim);
+};
+
+export default {
+    getFriendList,
+    deleteFriend,
+    getSendRequestList,
+    getReceiveRequestList,
+    postFriend,
+    putChoiceRequest,
+    getFriendLibrary,
+    getUserImages,
+    putUserImages,
+    deleteUserImages,
+};
