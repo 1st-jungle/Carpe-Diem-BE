@@ -44,6 +44,30 @@ route.post('/', upload.single('file'), async (req: Request, res: Response) => {
     });
 });
 
+route.post('/ffmpeg', upload.single('file'), async (req: Request, res: Response) => {
+    if (!req.user) {
+        return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
+    }
+    if (!req.file) {
+        return res.status(statusCode.BAD_REQUEST).json({ message: responseMessage.camera.upload_error });
+    }
+
+    const userId = req.user.user_id;
+    const expressionDto = JSON.parse(req.body.expressionData);
+    console.log(expressionDto);
+    const videoUrl: string = req.file['key'];
+    const thumbnailUrl: string = 'card-thumbnail' + req.file['key'].split('.')[0].replace('album-video', '') + '.jpg';
+
+    expressionDto['videoUrl'] = videoUrl;
+    expressionDto['userId'] = userId;
+    expressionDto['thumbnailUrl'] = thumbnailUrl;
+
+    cameraService.postffmpegCamera(expressionDto, (err, data) => {
+        if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.camera.expression_error });
+        else res.status(statusCode.OK).send(data);
+    });
+});
+
 route.get('/', (req: Request, res: Response) => {
     if (!req.user) return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
     const userId = req.user.user_id;
