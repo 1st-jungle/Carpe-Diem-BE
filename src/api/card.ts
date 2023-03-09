@@ -20,7 +20,6 @@ route.get('/', async (req: Request, res: Response) => {
     if (!req.user) return res.status(statusCode.UNAUTHORIZED).json({ message: responseMessage.auth.unauthorized });
     const userId = req.user.user_id;
     const option = req.query.option;
-    console.log(req);
 
     const pageAsNumber = Number.parseInt(req.query.page as string);
     const sizeAsNumber = Number.parseInt(req.query.size as string);
@@ -30,7 +29,6 @@ route.get('/', async (req: Request, res: Response) => {
 
     let size = 12;
     if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 13) size = sizeAsNumber;
-    console.log(page, size);
 
     cardService.getCards(userId, page, size, option, (err, data) => {
         if (err) res.status(statusCode.INTERNAL_SERVER_ERROR).send({ err: err, message: responseMessage.card.server_error });

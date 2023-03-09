@@ -21,11 +21,9 @@ const Card = db.card;
 
 const getCards = async (userId, page, size, option, callback) => {
     const offset = (page + 1) * size;
-    console.log(option);
     if (option == 0) {
         await Card.findAndCountAll({ where: { user_id: userId }, offset: 0, limit: offset, order: [['createdAt', 'DESC']] })
             .then((result) => {
-                // console.log('DSFSFSDFS', result);
                 const { rows, count } = result;
                 Logger.info(`[getCards] Success!DESC ${rows}`);
                 callback(null, rows);
@@ -37,7 +35,6 @@ const getCards = async (userId, page, size, option, callback) => {
     } else if (option == 1) {
         await Card.findAndCountAll({ where: { user_id: userId }, offset: 0, limit: offset, order: [['createdAt', 'ASC']] })
             .then((result) => {
-                console.log('DSFSFSDFS', result);
                 const { rows, count } = result;
                 Logger.info(`[getCards] Success!ASC ${rows}`);
                 callback(null, rows);
