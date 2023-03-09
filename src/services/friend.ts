@@ -194,11 +194,11 @@ const deleteUserImages = async (userId) => {
         where: { user_id: userId },
         raw: true,
     })
-        // .then(async (result) => {
-        //     for (const key of result) {
-        //         await deleteImg(key.user_img_url);
-        //     }
-        // })
+        .then(async (result) => {
+            for (const key of result) {
+                await deleteImg(key.user_img_url);
+            }
+        })
         .then(async () => {
             await Usim.destroy({ where: { user_id: userId } })
                 .then((result) => {
