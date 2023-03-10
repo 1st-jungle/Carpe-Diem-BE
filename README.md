@@ -94,6 +94,7 @@
         <li>"@types/swiper": "^6.0.0",</li>
     </ul>
 </details>
+
 ### 🌏 Infra
 
   <details>
