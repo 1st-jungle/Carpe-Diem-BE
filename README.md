@@ -81,6 +81,17 @@ EMAIL_PASS=${secret}
 
 <br>
 
-- 개발 로깅 관리 : `.logs`
-- Log levels 
+## 3️⃣ 로그 관리
+- 개발 로깅 : 루트 경로내 `.logs` 디렉토리
+- 배포 로깅 : AWS S3 버킷
+	- Log levels 
 	- error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
+
+<br>
+
+<br>
+
+## 4️⃣ ERD
+![db_erc](https://user-images.githubusercontent.com/67156494/226110650-4e1cc2ca-56a8-4cb1-be5d-4f78702e38b8.png)
+
+
